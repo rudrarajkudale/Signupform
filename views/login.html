@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: url("/bg.jpg");
+            background-size: cover;
+            color: #ffffff;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            width: 40%;
+            backdrop-filter: blur(10px);
+        }
+    
+        .login-container h2 {
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #ffffff;
+        }
+    
+        .form-group {
+            margin-bottom: 20px;
+        }
+    
+        .form-group label {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+            color: #ffffff;
+        }
+    
+        .form-group input {
+            width: 95%;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            font-size: 14px;
+        }
+    
+        .form-group input:focus {
+            border-color: #2980b9;
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+    
+        .password-container {
+            position: relative;
+        }
+    
+        .toggle-password {
+            position: absolute;
+            top: 50%;
+            right: 12px;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 18px;
+            color: #ffffff;
+            opacity: 0.8;
+        }
+    
+        .toggle-password:hover {
+            opacity: 1;
+        }
+    
+        .login-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #ffffff;
+            background: linear-gradient(135deg, #2980b9, #6dd5fa);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+    
+        .login-btn:hover {
+            background: linear-gradient(135deg, #6dd5fa, #2980b9);
+        }
+    
+        .error {
+            color: #e74c3c;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+    
+        @media (max-width: 768px) {
+            .login-container {
+                width: 90%;
+            }
+        }
+    </style>    
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login Form</h2>
+        <form method="post" action="/login">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+                <div class="error" id="emailError"></div>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="password-container">
+                    <input type="password" id="password" name="password" required>
+                    <span class="toggle-password" onclick="togglePassword('password')">👁</span>
+                </div>
+                <div class="error" id="passwordError"></div>
+            </div>
+            <button type="submit" class="login-btn">Login</button>
+        </form>
+        <p class="signup-link">Don't have an account? <a href="/">Sign Up</a></p>
+    </div>
+    <script>
+        const loginForm = document.querySelector('form');
+        const email = document.getElementById('email');
+        const password = document.getElementById('password');
+        const emailError = document.getElementById('emailError');
+        const passwordError = document.getElementById('passwordError');
+
+        loginForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            emailError.textContent = '';
+            passwordError.textContent = '';
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!emailRegex.test(email.value)) {
+                emailError.textContent = 'Enter a valid email address';
+                return;
+            }
+
+            if (password.value.trim() === '') {
+                passwordError.textContent = 'Password is required';
+                return;
+            }
+
+            loginForm.submit();
+        });
+
+        function togglePassword(id) {
+            const input = document.getElementById(id);
+            if (input.type === 'password') {
+                input.type = 'text';
+            } else {
+                input.type = 'password';
+            }
+        }
+    </script>    
+</body>
+</html>
+```

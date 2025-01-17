@@ -19,6 +19,7 @@ mongoose.connect(atlasdb)
     console.error('Error connecting to MongoDB:', err);
   });
 
+// Route for signup page
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "views", "signup.html"));
 });
@@ -45,12 +46,38 @@ app.post("/signup", async (req, res) => {
         await newUser.save();
 
         console.log("User registered successfully");
-        res.redirect("/")
+        res.redirect("/login");
     } catch (error) {
-        console.log("User not saved");
+        console.log("User not saved:", error.message);
+        res.status(500).send("Internal Server Error");
     }
 });
 
+// Route for login page
+app.get("/login", (req, res) => {
+    res.sendFile(path.join(__dirname, "views", "login.html"));
+});
+
+app.post("/login", async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).json({ message: "Invalid email or password" });
+        }
+
+        if (user.password !== password) {
+            return res.status(400).json({ message: "Invalid email or password" });
+        }
+
+        console.log("Login successful");
+        res.send("Welcome, " + user.firstName + "!");
+    } catch (error) {
+        console.log("Error during login:", error.message);
+        res.status(500).send("Internal Server Error");
+    }
+});
 
 app.listen(8080, () => {
     console.log("Server is listening on port 8080");
